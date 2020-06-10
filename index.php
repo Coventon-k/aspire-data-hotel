@@ -33,8 +33,6 @@
         $.ajax(settings).done(function (response) {
             response = response.trim();
             if (response.content !== 'erreur') {
-                // Creation d'une instance de appart: les infos d'un appartement
-                let unAppart = new Appart();
 
                 // Récuperation du bloc html qui contient les infos sur les appartements
                 let html = $(response).find('.contenu').contents();
@@ -43,6 +41,8 @@
                 // Recuperation des infos sur chaque appartement du bloc
                 $(annonces).each(function (index, element) {
 
+                    // Creation d'une instance de appart: les infos d'un appartement
+                    let unAppart = new Appart();
                     // Reférence de l'appart
                     unAppart.ref = $(element).find('.ref')[0].textContent;
 
@@ -50,6 +50,7 @@
                     let title =  $(element).find('.title_part2')[0].textContent.split('–');
                     unAppart.ville = title[0] !== '' ? title[0].trim(): null;
                     unAppart.quartier = title.length === 2 && title[1] !== '' ? title[1].trim(): null;
+                    title = [];
 
                     // nobre de pièce - metre carré - prix fai
                     let chiffres = $(element).find('.chiffres_cles strong');
