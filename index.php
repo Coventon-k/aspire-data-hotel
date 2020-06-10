@@ -16,7 +16,7 @@
 <input type="button" value="Extraire" id="extraire">
 <script type="application/javascript">
 
-    let data = {};
+    let data = [];
 
     $("#extraire").click(function() {
         let lien = $('.lien')[0].value;
@@ -29,33 +29,53 @@
             }
         };
 
+        // Traitement si requète ajax à fonctionner
         $.ajax(settings).done(function (response) {
             response = response.trim();
             if (response.content !== 'erreur') {
+                // Creation d'une instance de appart: les infos d'un appartement
+                let unAppart = new Appart();
+
+                // Récuperation du bloc html qui contient les infos sur les appartements
                 let html = $(response).find('.contenu').contents();
                 let annonces = html.find('div .bloc_annonce');
+
+                // Recuperation des infos sur chaque appartement du bloc
                 $(annonces).each(function (index, element) {
 
-                    console.log($(element).find('.ref')[0].textContent);
-                    console.log($(element).find('.title_part2')[0].textContent);
-                    let chiffres = $(element).find('.chiffres_cles strong');
-                    //console.log(chiffres)
-                    $(chiffres).each(function (index, element) {
-                        console.log(element.textContent)
+                    // Reférence de l'appart
+                    unAppart.ref = $(element).find('.ref')[0].textContent;
 
-                    })
-                    //console.log(element.find('.ref'));
-                    //console.log(element.find('.ref'));
+                    // Ville et quartier
+                    let title =  $(element).find('.title_part2')[0].textContent.split('–');
+                    unAppart.ville = title[0] !== '' ? title[0].trim(): null;
+                    unAppart.quartier = title.length === 2 && title[1] !== '' ? title[1].trim(): null;
+
+                    // nobre de pièce - metre carré - prix fai
+                    let chiffres = $(element).find('.chiffres_cles strong');
+                    unAppart.nb_piece =  $(chiffres)[0] instanceof Object ? $(chiffres)[0].textContent: null;
+                    unAppart.m_carre =  $(chiffres)[1] instanceof Object ? $(chiffres)[1].textContent: null;
+                    unAppart.prix_fai = $(chiffres)[2] instanceof Object ? $(chiffres)[2].textContent: null;
+
+                    // Ajout de l'appartement au tableau d'appart
+                    data.push(unAppart);
                 });
             }
 
         });
-    })
+        console.log(data)
 
+    });
+
+    // Objet représentant un appartement
     function  Appart() {
-        this.ref = 0;
-        this.title_part2 = '';
-        this.chiffres_cles = '';
+        this.ref = null;
+        this.ville = null;
+        this.quartier = null;
+        this.nb_piece = null;
+        this.m_carre = null;
+        this.prix_fai = null;
+        //this.date_apire = (new Date()).getMonth();
     }
 
 </script>
