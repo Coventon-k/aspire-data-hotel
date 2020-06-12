@@ -1,0 +1,37 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.un, .deux, .trois {
+    margin-top: 0;
+    height: 100vh;
+}
+
+.un {
+    background-color: white;
+
+}
+
+.deux {
+    background-color: #3498db;
+}
+
+.trois {
+    background-color: white;
+}
+
+.blocun, .blocdeux, .bloctrois {
+    padding-top: 100px;
+}
+
+#basic-url {
+
+}
+
+.minmaxmoy {
+    font-size: 1.5em;
+}
+
